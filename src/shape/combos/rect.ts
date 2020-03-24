@@ -1,7 +1,7 @@
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
 import { mix } from '@antv/util';
-import { LabelStyle, Item, NodeConfig, ModelConfig, ShapeStyle } from '../../types';
+import { LabelStyle, Item, ComboConfig, ModelConfig, ShapeStyle } from '../../types';
 import Global from '../../global';
 import Shape from '../shape';
 import { ILabelConfig, ShapeOptions } from '../../interface/shape';
@@ -66,7 +66,7 @@ Shape.registerCombo(
     },
     shapeType: 'rect',
     labelPosition: 'top',
-    drawShape(cfg: NodeConfig, group: GGroup): IShape {
+    drawShape(cfg: ComboConfig, group: GGroup): IShape {
       const style = this.getShapeStyle!(cfg);
       const keyShape = group.addShape('rect', {
         attrs: style,
@@ -78,7 +78,7 @@ Shape.registerCombo(
       return keyShape;
     },
     // 私有方法，不希望扩展的 Combo 复写这个方法
-    getLabelStyleByPosition(cfg: NodeConfig, labelCfg: ILabelConfig): LabelStyle {
+    getLabelStyleByPosition(cfg: ComboConfig, labelCfg: ILabelConfig): LabelStyle {
       const labelPosition = labelCfg.position || this.labelPosition;
   
       let { offset } = labelCfg;
@@ -87,7 +87,7 @@ Shape.registerCombo(
         offset = this.offset as number; // 不居中时的偏移量
       }
   
-      const size = this.getSize!(cfg as ModelConfig);
+      const size = this.getSize!(cfg);
   
       const width = size[0];
       const height = size[1];
@@ -139,8 +139,8 @@ Shape.registerCombo(
      * @param {Object} cfg 节点数据模型
      * @return {Object} 节点的样式
      */
-    getShapeStyle(cfg: NodeConfig) {
-      const { style: defaultStyle } = this.options as ModelConfig;
+    getShapeStyle(cfg: ComboConfig) {
+      const { style: defaultStyle } = this.options as ComboConfig;
       const strokeStyle: ShapeStyle = {
         stroke: cfg.color,
       };
@@ -166,8 +166,8 @@ Shape.registerCombo(
      * @param {Object} cfg data数据配置项
      * @param {Group} group Group实例
      */
-    drawCollapseIcon(cfg: NodeConfig, group: GGroup, style: any) {
-      const { collapseIcon: defaultCollapseIcon } = this.options as any;
+    drawCollapseIcon(cfg: ComboConfig, group: GGroup, style: any) {
+      const { collapseIcon: defaultCollapseIcon } = this.options as ComboConfig;
       const collapseIcon = mix({}, defaultCollapseIcon, cfg.collapseIcon);
 
       const { show, collapseSymbol, expandSymbol, offsetX, offsetY } = collapseIcon;
@@ -193,8 +193,8 @@ Shape.registerCombo(
         });
       }
     },
-    update(cfg: NodeConfig, item: Item) {
-      const { style: defaultStyle } = this.options as ModelConfig;
+    update(cfg: ComboConfig, item: Item) {
+      const { style: defaultStyle } = this.options as ComboConfig;
       let size = (this as ShapeOptions).getSize!(cfg);
       const keyShape = item.get('keyShape');
       if (!cfg.size) {

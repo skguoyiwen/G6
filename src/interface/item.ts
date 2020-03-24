@@ -12,6 +12,7 @@ import {
   ModelStyle,
   ShapeStyle,
   Indexable,
+  ComboConfig,
 } from '../types';
 
 // item 的配置项
@@ -130,7 +131,7 @@ export interface IItemBase {
    * 节点数据模型
    * @return {Object} 数据模型
    */
-  getModel(): NodeConfig | EdgeConfig;
+  getModel(): NodeConfig | EdgeConfig | ComboConfig;
 
   /**
    * 节点类型
